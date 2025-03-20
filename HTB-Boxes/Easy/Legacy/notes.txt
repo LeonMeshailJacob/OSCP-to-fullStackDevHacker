@@ -1,0 +1,77 @@
+## Machine Info
+
+Name: Legacy
+IP: 10.10.10.4
+OS: Windows XP (based on scans)
+
+##Nmap Scan - RECON STAGE
+
+Command:
+nmap -sC -sV -oN scans/nmap-initial.txt 10.10.10.4
+
+Open Ports:
+- 139/tcp SMB (NetBIOS Session Service)
+- 445/tcp SMB (Direct Server Message Block over TCP/IP)
+- 135 tcp - MS RPC (Remote Procedure Call)
+
+(SMB/RPC - these are file-sharing / remote services, often vulnertable in OSCP-style boxes
+
+## Vulnerabilities
+
+- MS17-010 (EternalBlue)
+	- CVE-2008-4250: SMB Remote Code Execution Vulnerability
+	 (using command nmap --script=smb-vuln* 10.10.10.4)
+	Note: CVE-2008-4250: This vulnerability allows remote attackers to execute arbitrary code
+	via crafted SMB packets. Exploited by EternalBlue
+
+	From the nmap scan:
+	IDs:  CVE:CVE-2008-4250
+|           The Server service in Microsoft Windows 2000 SP4, XP SP2 and SP3, Server 2003 SP1 and SP2,
+|           Vista Gold and SP1, Server 2008, and 7 Pre-Beta allows remote attackers to execute arbitrary
+|           code via a crafted RPC request that triggers the overflow during path canonicalization.
+|           
+|     Disclosure date: 2008-10-23
+|     References:
+|       https://technet.microsoft.com/en-us/library/security/ms08-067.aspx
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4250
+ 
+	
+
+## Exploitation Steps
+
+- Use Metasploit module:
+	exploit/windows/smb/ms08_067_netapi
+
+1. Confirm vuln with:
+
+nmap --script smb-vuln-ms17-010 -p445 10.10.10.14
+
+2. Use EternalBlue exploit:
+
+metaspolit/msfconsole OR manual python exploit
+
+3. Shell gained: NT AUTHORITY\SYSTEM
+
+##  Loot 
+-user.txt: [e69af0e4f443de7e36876fda4ec7644f]
+-root.txt: [993442d258b0e0ec917cae9e695d5713]
+
+## Priv Esc
+
+Already SYSTEM!
+
+##Post Exploitation
+
+-Users found:
+-Passwords found:
+-Interesting files:
+
+## Lessons Learned
+
+- set RHOSTS and LHOSTS and Payload and then exploit(command)
+- no Users on old machines, only Documents and Settings ( the file structure differs -dont panick)
+- found user.txt and root.txt
+- updated notes only after pawned the box.
+- Meterpreter doesnt always run, drop into shell
+- EternalBlue still works on old machines
+
