@@ -75,3 +75,14 @@ Already SYSTEM!
 - Meterpreter doesnt always run, drop into shell
 - EternalBlue still works on old machines
 
+
+## post Pwning Legacy - Task 7 # In addition to MS08-067, Legacy's SMB service us also vulnerable
+## to another remote code execution vulnerability  with a CVE ID from 2017. Whats is that ID?
+
+- Legacy runs SMBv1 us is very vulnertable
+- in 2017, the EternalBlue exploit was released publicly by Shadow Brokers
+- EternalChampion  exploits CVE-2017-0143, allowing remote code execution (RCE) through SMBv1
+
+
+
+
